@@ -9,27 +9,29 @@ import matplotlib.animation as animation
 
 
 class PID:
-	def __init__(self, kp, ki, kd):
+	def __init__(self, kp, ki, kd, o_min, o_max):
 		self.kp = kp
 		self.ki = ki
 		self.kd = kd
+		self.e0 = 0
+		self.inte = 0
+		self.out = 0
+		self.min = o_min
+		self.max = o_max
 
 	def set_out(self, e):
-		e = np.array(e)
-		print('kp', self.kp)
-		self.kd = self.kp/2
-		self.ki = self.kp/2
-		if len(e)==1:
-			deri = 0
-		else:
-			deri = e[-1] - e[-2]
-		inte = np.trapz(e)
-		prop = e[-1]
-		self.out = self.kp*prop + self.ki*inte + self.kd*deri
-		if self.out>1:
-			self.out = 1
-		elif self.out<0:
-			self.out = 0
+		#print('kp', self.kp)
+		#self.kd = self.kp/2
+		#self.ki = self.kp/2
+		prop = e*self.kp		
+		deri = (e - self.e0)*self.kd
+		if self.out!=1 and self.out!=0:
+			self.inte += e*self.ki
+		self.out = prop + deri + self.inte
+		if self.out>self.max:
+			self.out = self.max
+		elif self.out<self.min:
+			self.out = self.min
 
 	def set_kp(self, kp):
 		self.kp = kp
