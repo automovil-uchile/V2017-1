@@ -46,6 +46,7 @@ class PID:
 		deri = (e - self.e0)*self.kd
 		if self.out!=1 and self.out!=0:
 			self.inte += e*self.ki
+		print('integral', self.inte)
 		self.out = prop + deri + self.inte
 		if self.out>self.max:
 			self.out = self.max
@@ -77,14 +78,15 @@ def init():
 def run(t):
     	# update the data
 	vel_set = A0.read()*0.2
-	vel_act = A2.read()
+	vel_act = A2.read()*0.5
+	vel_act += A2.read()*0.5
 	ang = ang2ang(A1.read())
 	pid.kd = A3.read()	
 	m_izq.set_vel(v=vel_set, ang=ang)
 	m_der.set_vel(v=vel_set, ang=ang)	
 	er = m_izq.vel - vel_act
 	error.append(er)
-	pid.set_out(error)
+	pid.set_out(er)
 	f = pid.out
 	print('out', f)
 	D3.write(f)
