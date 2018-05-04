@@ -6,7 +6,7 @@ import time
 import pyfirmata
 import datetime
 import matplotlib.animation as animation
-from motorModificado import *
+from Motor import *
 
 class PID:
 	def __init__(self, kp, ki, kd, o_min, o_max):
@@ -58,25 +58,25 @@ def init():
 
 def run(t):
     	# update the data
-	vel_set = A0.read()*0.2
+	vel_set =  0.5 # A0.read()*0.2
 	vel_act = A2.read()*0.5
 	vel_act += A2.read()*0.5
 	ang = ang2ang(A1.read())
-	pid.kd = A3.read()	
+	#pid.kd = A3.read()	
 	m_izq.set_vel(v=vel_set, ang=ang)
 	m_der.set_vel(v=vel_set, ang=ang)	
-	er = m_izq.vel - vel_act
-	error.append(er)
-	pid.set_out(er)
-	f = pid.out
-	print('out', f)
+	#er = m_izq.vel - vel_act
+	#error.append(er)
+	#pid.set_out(er)
+	f = m_izq.get_vel() # pid.out
+	print(vel_set, vel_act)
 	D3.write(f)
 	Act.append(vel_act)
 	Set.append(vel_set)
 	y1data.append(ang)
 
-	y_izq.append(m_izq.vel)
-	y_der.append(m_der.vel)
+	y_izq.append(m_I.vel)
+	y_der.append(m_D.vel)
 
 	xdata.append(len(Set))
 
@@ -128,8 +128,8 @@ error = []
 
 l = 2
 w = 1
-m_izq = MotorIzquierdo(l, w)
-m_der = MotorDerecho(l, w)
+m_I = MotorIzquierdo(l, w)
+m_D = MotorDerecho(l, w)
 pid = PID(kp=1, kd=1, ki=1, o_min=0, o_max=1)
 n = 100 # muestras plot
 
