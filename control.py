@@ -6,26 +6,7 @@ import time
 import pyfirmata
 import datetime
 import matplotlib.animation as animation
-
-class Motor:
-	'Common base class for all employees'
-	MotCount = 0
-
-	def __init__(self, pos, l, w):
-		Motor.MotCount += 1
-		self.vel = 0
-		self.pos = pos
-		self.l = l
-		self.w = w
-
-	def set_vel(self, v, ang):
-		ang = ang*np.pi/180
-		a = self.l/(np.tan(ang) + 1e-5)
-		if self.pos=='der':
-			self.vel = v*(1 + self.w/2/a)
-		elif self.pos=='izq':
-			self.vel = v*(1 - self.w/2/a)
-
+from motorModificado import *
 
 class PID:
 	def __init__(self, kp, ki, kd, o_min, o_max):
@@ -147,8 +128,8 @@ error = []
 
 l = 2
 w = 1
-m_izq = Motor(pos='izq', l=l, w=w)
-m_der = Motor(pos='der', l=l, w=w)
+m_izq = MotorIzquierdo(l, w)
+m_der = MotorDerecho(l, w)
 pid = PID(kp=1, kd=1, ki=1, o_min=0, o_max=1)
 n = 100 # muestras plot
 

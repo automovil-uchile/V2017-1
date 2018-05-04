@@ -5,10 +5,9 @@ import numpy as np
 class Motor(object):
     MotCount = 0
     
-    def __init__(self, pos, l, w):
+    def __init__(self, l, w):
         Motor.MotCount += 1
         self.vel = 0
-        self.pos = pos
         self.l = l
         self.w = w
 
@@ -21,7 +20,7 @@ class Motor(object):
 class MotorIzquierdo(Motor):
 
     def __init__(self , l, w):
-        Motor.__init__(self, "izq", l, w)
+        Motor.__init__(self, l, w)
 
     #Override
     def set_vel(self, v, ang):
@@ -32,7 +31,7 @@ class MotorIzquierdo(Motor):
 class MotorDerecho(Motor):
 
     def __init__(self , l, w):
-        Motor.__init__(self, "der", l, w)
+        Motor.__init__(self, l, w)
 
     #Override
     def set_vel(self, v, ang):
@@ -40,7 +39,7 @@ class MotorDerecho(Motor):
         a = self.l/(np.tan(ang) + 1e-5)
         self.vel = v*(1 + self.w/2/a)
 
-
+"""
 if __name__ == "__main__":
         l = 1
         w = 2
@@ -51,3 +50,4 @@ if __name__ == "__main__":
         print "Velocidad motor izquierdo"
         vel = motor_izq.get_vel()
         print vel
+"""
