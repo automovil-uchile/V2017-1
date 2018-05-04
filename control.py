@@ -7,43 +7,8 @@ import pyfirmata
 import datetime
 import matplotlib.animation as animation
 from Motor import *
-
-class PID:
-	def __init__(self, kp, ki, kd, o_min, o_max):
-		self.kp = kp
-		self.ki = ki
-		self.kd = kd
-		self.e0 = 0
-		self.inte = 0
-		self.out = 0
-		self.min = o_min
-		self.max = o_max
-
-	def set_out(self, e):
-		#print('kp', self.kp)
-		#self.kd = self.kp/2
-		#self.ki = self.kp/2
-		prop = e*self.kp		
-		deri = (e - self.e0)*self.kd
-		if self.out!=1 and self.out!=0:
-			self.inte += e*self.ki
-		print('integral', self.inte)
-		self.out = prop + deri + self.inte
-		if self.out>self.max:
-			self.out = self.max
-		elif self.out<self.min:
-			self.out = self.min
-
-	def set_kp(self, kp):
-		self.kp = kp
+from pid import *
 	
-	def set_ki(self, ki):
-		self.ki = ki
-
-	def set_kd(self, kd):
-		self.kd = kd
-	
-
 def ang2ang(x):
 	return 90*(x - 1) + 45
 	
