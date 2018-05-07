@@ -35,7 +35,8 @@ def run(t):
 	#pid.set_out(er)
 	f = m_izq.get_vel() # pid.out
 	print(vel_set, vel_act)
-	D3.write(f)
+	D5.write(f)
+	# D6.write(f)
 	Act.append(vel_act)
 	Set.append(vel_set)
 	y1data.append(ang)
@@ -108,8 +109,12 @@ A0 = board.get_pin('a:0:i') # define pin analogico A0 como input
 A1 = board.get_pin('a:1:i') # define pin analogico A0 como input
 A2 = board.get_pin('a:2:i')
 A3 = board.get_pin('a:3:i')
-D2 = board.get_pin('d:2:o') # define pin digital D2 como input (ampolleta 1)
-D3 = board.get_pin('d:3:p') # pwm
+D5 = board.get_pin('d:5:o') # pwm motor 1
+D6 = board.get_pin('d:6:p') # pwm motor 2
+
+# puertos pwm arduino uno
+# 3, 9, 10, 11	31.25 kHz
+# 5, 6 		62.5 kHz
 
 D3.write(0.50)
 
