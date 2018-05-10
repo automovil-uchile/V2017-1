@@ -7,7 +7,7 @@ import pyfirmata
 import datetime
 import matplotlib.animation as animation
 from Motor import *
-from pid import *
+from Pid import *
 	
 def ang2ang(x):
 	return 90*(x - 1) + 45

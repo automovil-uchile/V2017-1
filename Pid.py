@@ -32,9 +32,9 @@ class PID:
 
 	def set_kp(self, kp):
 		self.kp = kp
-
-        def get_kp(self):
-                return self.kp
+	
+	def get_kp(self):
+		return self.kp
 	
 	def set_ki(self, ki):
 		self.ki = ki
@@ -44,6 +44,6 @@ class PID:
 
 	def set_kd(self, kd):
 		self.kd = kd
-
-        def get_kd(self):
+	
+	def get_kd(self):
                 return self.kd

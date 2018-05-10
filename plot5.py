@@ -1,11 +1,17 @@
 #import serial
 from tkinter import *
-from matplotlib import pyplot as plt
+import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from matplotlib import style
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import time
 import numpy as np
+import pyfirmata
+
+from Motor import *
+from Pid import *
+
+
 
 def ang2ang(x):
 	return 90*(x - 1) + 45
@@ -84,7 +90,8 @@ line, = ax1.plot(xar, yar, 'r', marker='o')
 #ser = serial.Serial('com3', 9600)
 
 
-	
+#---------------------------------------------------------
+# Buttons and scale
 button = Button(master=root, text='Quit', command=_quit)
 button2 = Button(master=root, text='Refresh', command=refresh)
 w = Scale(master=root, from_=0, to=200, orient=HORIZONTAL)
@@ -92,6 +99,8 @@ w.pack()
 button2.pack(side=BOTTOM)
 button.pack(side=BOTTOM)
 
+
+#---------------------------------------------------------------
 plotcanvas = FigureCanvasTkAgg(fig, root)
 plotcanvas.get_tk_widget().pack()#grid(column=1, row=1)
 ani = animation.FuncAnimation(fig, animate, interval=1, blit=False)
