@@ -18,17 +18,22 @@ class PID:
 		self.out = 0
 		self.min = o_min
 		self.max = o_max
-
+		self.t1 = 0
+	
 	def set_out(self, e):
+		t2 = time.time()
+		dt = t2 - self.t1
 		prop = e*self.kp		
-		deri = (e - self.e0)*self.kd
+		deri = (e - self.e0)/dt*self.kd
 		if self.out!=1 and self.out!=0:
-			self.inte += e*self.ki
+			self.inte += e*self.ki*dt
 		self.out = prop + deri + self.inte
 		if self.out>self.max:
 			self.out = self.max
 		elif self.out<self.min:
 			self.out = self.min
+		self.e0 = e
+		self.t1 = t2
 
 	def set_kp(self, kp):
 		self.kp = kp
