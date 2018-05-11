@@ -22,18 +22,37 @@ def animate(i):
 	#data_array = data.split(',')
 	#yvalue = float(data_array[1])
 	t1 = time.time()
-	yar.append(Bang.get())
+	vel_set = Bvel.get()
+	ang = Bang.get()
+	m_I.set_vel(v=vel_set, ang=ang)
+	m_D.set_vel(v=vel_set, ang=ang)
+
+	y1.append(ang)
+	y2.append(vel_set)
+	y3.append(m_I.get_vel())
+	y4.append(m_D.get_vel())	
 	xar.append(np.around(t1 - ti, 2))
 	n = len(xar)
+
 	if n<N:
-		line.set_data(xar, yar)
+		line1.set_data(xar, y1)
+		line2.set_data(xar, y2)
+		line3.set_data(xar, y3)
+		line4.set_data(xar, y4)
 		ax1.set_xlim(0, xar[-1])
-		ax1.set_ylim(min(yar), max(yar))
+		ax2.set_xlim(0, xar[-1])
+		ax3.set_xlim(0, xar[-1])
+		ax1.set_ylim(min(y1) - 1, max(y1) + 1)
 	else:
-		ynew = yar[-N:]
-		line.set_data(xar[-N:], ynew)
+		ynew1 = y1[-N:]
+		line1.set_data(xar[-N:], ynew1)
+		line2.set_data(xar[-N:], y2[-N:])
+		line3.set_data(xar[-N:], y3[-N:])
+		line4.set_data(xar[-N:], y4[-N:])
 		ax1.set_xlim(xar[-N], xar[-1])
-		ax1.set_ylim(min(ynew), max(ynew))
+		ax2.set_xlim(xar[-N], xar[-1])
+		ax3.set_xlim(xar[-N], xar[-1])
+		ax1.set_ylim(min(ynew1) - 1, max(ynew1) + 1)
 	t2 = time.time()
 	print('lag', t2 - t1)
 	return
@@ -82,9 +101,22 @@ root.config(background='#fafafa')
 #---------------------------------------------------
 # Data
 xar = []
-yar = []
+y1 = []
+y2 = []
+y3 = []
+y4 = []
+y5 = []
+y6 = []
 N = 100
 ti = time.time()
+
+#-------------------------------------------------------
+# Car configuration
+l = 2
+w = 1
+m_I = MotorIzquierdo(l, w)
+m_D = MotorDerecho(l, w)
+pid = PID(kp=1, kd=1, ki=1, o_min=0, o_max=1)
 
 #---------------------------------------------------
 # Plot
@@ -102,7 +134,17 @@ ax3 = fig.add_subplot(3, 1, 3)
 ax3.set_ylim(0, 100)
 ax3.set_ylabel('vel motores V')
 ax3.set_xlabel('tiempo s')
-line, = ax1.plot(xar, yar, 'r', marker='o')
+
+line1, = ax1.plot(xar, y1, 'r')
+line2, = ax2.plot(xar, y2, 'r')
+line3, = ax3.plot(xar, y3, 'r', color='red', label='set', ls='dashed')
+line4, = ax3.plot(xar, y4, 'r', color='navy', label='set', ls='dashed')
+line5, = ax3.plot(xar, y3, 'r', color='red', label='izq')
+line6, = ax3.plot(xar, y4, 'r', color='navy', label='der')
+
+ax3.legend()
+
+
 #ser = serial.Serial('com3', 9600)
 
 
@@ -111,19 +153,22 @@ line, = ax1.plot(xar, yar, 'r', marker='o')
 button = Button(master=root, text='Quit', command=_quit)
 button2 = Button(master=root, text='Refresh', command=refresh)
 Bang = Scale(master=root, from_=-45, to=45, orient=HORIZONTAL, label='angulo')
+Bvel = Scale(master=root, from_=0, to=100, orient=HORIZONTAL, label='vel auto')
 Bkp = Scale(master=root, from_=-100, to=100, orient=HORIZONTAL, label='kp')
 Bkd = Scale(master=root, from_=-100, to=100, orient=HORIZONTAL, label='kd')
 Bki = Scale(master=root, from_=-100, to=100, orient=HORIZONTAL, label='ki')
 
 #Bang.grid()
 
+button2.pack(side=BOTTOM)
+button.pack(side=BOTTOM)
 Bang.pack(side=LEFT)
+Bvel.pack(side=TOP)
 Bkp.pack(side=LEFT)
 Bkd.pack(side=LEFT)
 Bki.pack(side=LEFT)
 
-button2.pack(side=BOTTOM)
-button.pack(side=BOTTOM)
+
 
 
 #---------------------------------------------------------------
