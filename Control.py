@@ -16,7 +16,7 @@ def ang2ang(x):
 	return 90*(x - 1) + 45
 
 
-def read(pin, l=40):
+def read(pin, l=100):
 	lec = 0
 	for i in range(l):
 		lec += pin.read()
@@ -26,13 +26,14 @@ def read(pin, l=40):
 def animate(i):
 	t1 = time.time() # tiempo de inicio ejecucion
 	# lectura de gui y arduino
-	vel_set = Bvel.get()
+	vel_set = Bvel.get()/100
 	ang = Bang.get()
-	vel1 = read(A0)*100
-	vel2 = read(A1)*100
-	kp = Bkp.get()
-	kd = Bkd.get()
-	ki = Bki.get()
+	vel1 = read(A0)
+	vel2 = read(A1)
+	kp = Bkp.get()/100
+	kd = Bkd.get()/100
+	ki = Bki.get()/100
+	kaw = Bkaw.get()/100
 	# diferencial
 	m_I.set_vel(v=vel_set, ang=ang)
 	m_D.set_vel(v=vel_set, ang=ang)
@@ -41,11 +42,12 @@ def animate(i):
 	pid.set_kp(kp)
 	pid.set_kd(kd)
 	pid.set_ki(ki)
+	pid.set_kaw(kaw)
 	eI = m_I.vel - vel1
 	eD = m_D.vel - vel2
-	pid.set_out(eI)
+	pid.update(eI)
 	# set de frecuencias
-	f1 = pid.out/100
+	f1 = pid.out
 	print(f1)
 	#print('velset', vel_set, 'vel1', vel1, 'error', vel_set - vel1)
 	D5.write(f1)
@@ -59,7 +61,7 @@ def animate(i):
 	y5.append(vel1)
 	y6.append(vel2)
 	y7.append(eI)
-	y8.append(0) # eD
+	y8.append(pid.inte*pid.get_ki()) # eD
 	xar.append(np.around(t1 - ti, 2))
 	n = len(xar)
 
@@ -75,16 +77,20 @@ def animate(i):
 		ax1.set_xlim(0, xar[-1])
 		ax2.set_xlim(0, xar[-1])
 		ax3.set_xlim(0, xar[-1])
-		ax1.set_ylim(min(min(y1), min(y2)) - 2, max(max(y1), max(y2)) + 2)
+		min1 = min(min(y1), min(y2))
+		max1 = max(max(y1), max(y2))
+		ax1.set_ylim(min1*(1 - 0.1), max1*(1 + 0.1))
 	else:
 		ynew1 = y1[-N:]
 		ynew2 = y2[-N:]
+		ynew3 = y3[-N:]
+		ynew4 = y4[-N:]
 		ynew7 = y7[-N:]
 		ynew8 = y8[-N:]
 		line1.set_data(xar[-N:], ynew1)
 		line2.set_data(xar[-N:], ynew2)
-		line3.set_data(xar[-N:], y3[-N:])
-		line4.set_data(xar[-N:], y4[-N:])
+		line3.set_data(xar[-N:], ynew3)
+		line4.set_data(xar[-N:], ynew4)
 		line5.set_data(xar[-N:], y5[-N:])
 		line6.set_data(xar[-N:], y6[-N:])
 		line7.set_data(xar[-N:], ynew7[-N:])
@@ -92,8 +98,12 @@ def animate(i):
 		ax1.set_xlim(xar[-N], xar[-1])
 		ax2.set_xlim(xar[-N], xar[-1])
 		ax3.set_xlim(xar[-N], xar[-1])
-		ax1.set_ylim(min(min(ynew1), min(ynew2)) - 2, max(max(ynew1), max(ynew2)) + 2)
-		ax3.set_ylim(min(min(ynew7), min(ynew8)) - 2, max(max(ynew7), max(ynew8)) + 2)
+		min1 = min(min(ynew1), min(ynew2))
+		max1 = max(max(ynew1), max(ynew2))
+		min2 = min(min(ynew7), min(ynew8))
+		max2 = max(max(ynew7), max(ynew8))
+		ax1.set_ylim(min1*(1 - 0.1), max1*(1 + 0.1))
+		ax3.set_ylim(min2*(1 - 0.1), max2*(1 + 0.1))
 	t2 = time.time()
 	print('lag', t2 - t1)
 	return
@@ -136,7 +146,7 @@ D6 = board.get_pin('d:6:p') # pwm motor 2
 #-----------------------------------------------------
 # Gui
 root = Tk()
-root.geometry('1200x700+200+100')
+root.geometry('1366x768+200+100')
 root.title('Display Controlador')
 #root.state('zoomed')
 root.config(background='#fafafa')
@@ -162,7 +172,7 @@ l = 2
 w = 1
 m_I = MotorIzquierdo(l, w)
 m_D = MotorDerecho(l, w)
-pid = PID(kp=1, kd=1, ki=1, o_min=0, o_max=100)
+pid = PID(kp=1, kd=1, ki=1, kaw=10, o_min=0, o_max=1)
 
 #---------------------------------------------------
 # Plot
@@ -174,7 +184,7 @@ ax1.set_ylim(0, 100)
 ax1.set_ylabel('ang deg, vel auto')
 
 ax2 = fig.add_subplot(3, 1, 2)
-ax2.set_ylim(0, 100)
+ax2.set_ylim(0, 0.3)
 ax2.set_ylabel('vel motores V')
 
 
@@ -189,8 +199,8 @@ line3, = ax2.plot(xar, y3, 'r', color='red', label='set', ls='dashed')
 line4, = ax2.plot(xar, y4, 'r', color='navy', label='set', ls='dashed')
 line5, = ax2.plot(xar, y5, 'r', color='red', label='izq')
 line6, = ax2.plot(xar, y6, 'r', color='navy', label='der')
-line7, = ax3.plot(xar, y7, 'r', color='green', label='der')
-line8, = ax3.plot(xar, y8, 'r', color='brown', label='izq')
+line7, = ax3.plot(xar, y7, 'r', color='green', label='error')
+line8, = ax3.plot(xar, y8, 'r', color='brown', label='integral')
 
 ax2.legend()
 ax3.legend()
@@ -202,13 +212,14 @@ ax3.legend()
 #---------------------------------------------------------
 # Buttons and scale
 button = Button(master=root, text='Quit', command=_quit)
-button2 = Button(master=root, text='Refresh', command=refresh)
+button2 = Button(master=root, text='unitario', command=refresh)
 Bang = Scale(master=root, from_=-45, to=45, orient=HORIZONTAL, label='angulo')
 Bvel = Scale(master=root, from_=0, to=25, orient=HORIZONTAL, label='vel auto')
-lim = 500
+lim = 1000
 Bkp = Scale(master=root, from_=0, to=lim, orient=HORIZONTAL, label='kp')
 Bkd = Scale(master=root, from_=0, to=int(lim/2), orient=HORIZONTAL, label='kd')
 Bki = Scale(master=root, from_=0, to=int(lim/2), orient=HORIZONTAL, label='ki')
+Bkaw = Scale(master=root, from_=0, to=int(lim/2), orient=HORIZONTAL, label='kaw')
 
 #Bang.grid()
 
@@ -219,6 +230,7 @@ Bvel.pack(side=TOP)
 Bkp.pack(side=LEFT)
 Bkd.pack(side=LEFT)
 Bki.pack(side=LEFT)
+Bkaw.pack(side=TOP)
 
 
 
