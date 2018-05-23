@@ -124,6 +124,7 @@ def refresh():
 
 
 def set_mean():
+	1
 	return m
 
 
