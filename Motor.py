@@ -3,10 +3,8 @@
 import numpy as np
 
 class Motor(object):
-    MotCount = 0
     
     def __init__(self, l, w):
-        Motor.MotCount += 1
         self.vel = 0
         self.l = l
         self.w = w
@@ -39,15 +37,3 @@ class MotorDerecho(Motor):
         a = self.l/(np.tan(ang) + 1e-5)
         self.vel = v*(1 + self.w/2/a)
 
-"""
-if __name__ == "__main__":
-        l = 1
-        w = 2
-        motor_izq = MotorIzquierdo(l,w)
-        motor_der = MotorDerecho(l,w)
-        print "Velocidad motor derecho"
-        print motor_der.get_vel()
-        print "Velocidad motor izquierdo"
-        vel = motor_izq.get_vel()
-        print vel
-"""

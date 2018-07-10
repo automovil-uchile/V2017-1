@@ -25,11 +25,12 @@ def read(pin, l=100):
 
 def animate(i):
 	t1 = time.time() # tiempo de inicio ejecucion
-	# lectura de gui y arduino
+	# lectura arduino
 	vel_set = Bvel.get()/100
 	ang = Bang.get()
 	vel1 = read(A0)
 	vel2 = read(A1)
+	# lectura gui
 	kp = Bkp.get()/100
 	kd = Bkd.get()/100
 	ki = Bki.get()/100
@@ -124,7 +125,6 @@ def refresh():
 
 
 def set_mean():
-	1
 	return m
 
 
