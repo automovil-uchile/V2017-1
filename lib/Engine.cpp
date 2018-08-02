@@ -1,11 +1,13 @@
 #include "Arduino.h"
 #include "Engine.h"
 
-Engine::Engine(char* name, int pin)
+Engine::Engine(char* name, int pinThrottle, int pinMarcha)
 {
-	pinMode(pin, OUTPUT);
+	pinMode(pinThrottle, OUTPUT);
+	pinMode(pinMarcha, OUTPUT);
 	_name = name;
-	_pin = pin;
+	_pinThrottle = pinThrottle;
+	_pinMarcha = pinMarcha;
 	_status = 0;
 	_vel = 0;
 
@@ -19,8 +21,12 @@ int Engine::setVelocity(int vel){
 	return 1;
 }
 
-void Engine::setPin(int pin){
-	_pin = pin;
+void Engine::setPinThrottle(int pinThrottle){
+	_pinThrottle = pinThrottle;
+}
+
+void Engine::setPinMarcha(int pinMarcha){
+	_pinMarcha = pinMarcha;
 }
 
 void Engine::start(){
