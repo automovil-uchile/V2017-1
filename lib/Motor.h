@@ -1,5 +1,3 @@
-
-
 #ifndef Motor_h
 #define Motor_h
 
@@ -8,17 +6,19 @@
 class Motor
 {
 	public:
-	  Motor(char *name);
-	  setVelocity(int vel);
-	  start();
-      stop();
-	  getVelocity();
-	  getName();
-	  getState();
+		Motor(char *name, int pinthrottle, int pinstatus);
+		void setThrottle(float throttle);
+		//start();
+		//stop();
+		//getVelocity();
+		//getName();
+		//getState();
 	private:
-	  char* _name;
-	  int _status;
-	  int _vel;
+		char* _name;
+		int _pinthrottle;
+		int _pinstatus;
+		int _status ;
+		int _dutycycle;
 };
 
 #endif
