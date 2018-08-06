@@ -8,6 +8,7 @@ class Motor
 	public:
 		Motor(char *name, int pinthrottle, int pinstatus);
 		void setThrottle(float throttle);
+		void setStatus(int status);
 		//start();
 		//stop();
 		//getVelocity();
