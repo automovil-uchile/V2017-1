@@ -1,12 +1,12 @@
-#ifndef Motor_h
-#define Motor_h
+#ifndef Engine_h
+#define Engine_h
 
 #include "Arduino.h"
 
-class Motor
+class Engine
 {
 	public:
-		Motor(char *name, int pinthrottle, int pinstatus);
+		Engine(char *name, int pinthrottle, int pinstatus);
 		void setThrottle(float throttle);
 		void setStatus(int status);
 		//start();

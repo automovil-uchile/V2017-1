@@ -1,55 +1,67 @@
 #include "Arduino.h"
 #include "Engine.h"
 
-Engine::Engine(char* name, int pinThrottle, int pinMarcha)
-{
-	pinMode(pinThrottle, OUTPUT);
-	pinMode(pinMarcha, OUTPUT);
+Engine::Engine(char* name, int pinthrottle, int pinstate){
 	_name = name;
-	_pinThrottle = pinThrottle;
-	_pinMarcha = pinMarcha;
-	_status = 0;
-	_vel = 0;
+	_pinthrottle = pinthrottle;
+	_pinstate = pinstate;
+	_state = 0;
+	_dutycycle = 0;
 
 }
 
-int Engine::setVelocity(int vel){
-	if (_status == 0){
-		return 0;
+void Engine::setThrottle(float throttle){
+	_dutycycle = (int) throttle*255.;
+	analogWrite(_pinthrottle, _dutycycle);
+}
+
+void Engine::setState(int state){
+	/*
+	2: forward
+	1: backward
+	0: idle
+	*/
+	_state = state;
+	if (_state==2){
+		digitalWrite(_pinstate, 1);
 	}
-	_vel = vel;
-	return 1;
+	else if (_state==1){
+		digitalWrite(_pinstate, 0);
+	}
+	else{
+		analogWrite(_pinthrottle, 0);
+	}
 }
 
-void Engine::setPinThrottle(int pinThrottle){
-	_pinThrottle = pinThrottle;
-}
-
-void Engine::setPinMarcha(int pinMarcha){
-	_pinMarcha = pinMarcha;
-}
 
 void Engine::start(){
-	_status == 1;
+	//It should connect a power relay, but now it changes the state to idle and zero throttle.
+	_state == 0;
+	digitalWrite(_pinstate, 1);
+	analogWrite(_pinthrottle, 0);
+
 }
 
 void Engine::stop(){
-	_status == 0;
-	_vel = 0;
+	//It should disconnect a power relay, but now it changes the state to idle and zero throttle.
+	_state == 0;
+	digitalWrite(_pinstate, 1);
+	analogWrite(_pinthrottle, 0);
 }
-
-void Engine::getVelocity(){
+/*
+void Motor::getVelocity(){
 	return _vel;
 }
-
-void Engine::getName(){
+*/
+char* Engine::getName(){
 	return _name;
 }
 
-void Engine::getState(){
+int Engine::getState(){
 	return _state;
 }
-
-void Engine::getPin(){
+/*
+void Motor::getPin(){
 	return _pin;
 }
+*/

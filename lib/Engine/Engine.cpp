@@ -1,7 +1,7 @@
 #include "Arduino.h"
-#include "Motor.h"
+#include "Engine.h"
 
-Motor::Motor(char* name, int pinthrottle, int pinstatus)
+Engine::Engine(char* name, int pinthrottle, int pinstatus)
 {
 	_name = name;
 	_pinthrottle = pinthrottle;
@@ -21,12 +21,12 @@ int Motor::setThrottle(float throttle){
 }
 */
 
-void Motor::setThrottle(float throttle){
+void Engine::setThrottle(float throttle){
 	_dutycycle = (int) throttle*255;
 	analogWrite(_pinthrottle, _dutycycle);
 }
 
-void Motor::setStatus(int status){
+void Engine::setStatus(int status){
 	/*
 	2: forward
 	1: backward
