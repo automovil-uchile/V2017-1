@@ -1,43 +1,33 @@
 #include "Arduino.h"
 #include "Engine.h"
 
-Engine::Engine(char* name, int pinthrottle, int pinstatus)
+Engine::Engine(char* name, int pinthrottle, int pinstate)
 {
 	_name = name;
 	_pinthrottle = pinthrottle;
-	_pinstatus = pinstatus;
-	_status = 0;
+	_pinstate = pinstate;
+	_state = 0;
 	_dutycycle = 0;
 
 }
 
-/*
-int Motor::setThrottle(float throttle){
-	if (_status == 0){
-		return 0;
-	}
-	_vel = vel;
-	return 1;
-}
-*/
-
 void Engine::setThrottle(float throttle){
-	_dutycycle = (int) throttle*255;
+	_dutycycle = static_cast<int>(throttle*255.0);
 	analogWrite(_pinthrottle, _dutycycle);
 }
 
-void Engine::setStatus(int status){
+void Engine::setState(int state){
 	/*
 	2: forward
 	1: backward
 	0: idle
 	*/
-	_status = status;
-	if (_status==2){
-		digitalWrite(_pinstatus, 1);
+	_state = state;
+	if (_state==2){
+		digitalWrite(_pinstate, 1);
 	}
-	else if (_status==1){
-		digitalWrite(_pinstatus, 0);
+	else if (_state==1){
+		digitalWrite(_pinstate, 0);
 	}
 	else{
 		analogWrite(_pinthrottle, 0);

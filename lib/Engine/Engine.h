@@ -6,9 +6,9 @@
 class Engine
 {
 	public:
-		Engine(char *name, int pinthrottle, int pinstatus);
+		Engine(char* name, int pinthrottle, int pinstate);
 		void setThrottle(float throttle);
-		void setStatus(int status);
+		void setState(int state);
 		//start();
 		//stop();
 		//getVelocity();
@@ -17,8 +17,8 @@ class Engine
 	private:
 		char* _name;
 		int _pinthrottle;
-		int _pinstatus;
-		int _status ;
+		int _pinstate;
+		int _state;
 		int _dutycycle;
 };
 
