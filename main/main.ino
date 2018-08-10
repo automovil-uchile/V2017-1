@@ -20,7 +20,7 @@ void loop()
 	//EA.startEngines();
 	float ang = 10.;
 	EA.differential(deg2rad(ang), 0.5);
-	EA.setAcc();
+	EA.updateAcc();
 	a = EA.getAccR();
 	b = EA.getAccL();
 	Serial.print(a);

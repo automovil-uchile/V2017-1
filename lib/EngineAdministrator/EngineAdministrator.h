@@ -11,7 +11,8 @@ class EngineAdministrator
     //void stopEngines();
     
     void differential(float angle, float acc);
-    void setAcc();
+    void uploadAcc();
+    void set_acc();
     float getAccR();
     float getAccL();
     //setMarcha(int marcha);
@@ -28,6 +29,12 @@ class EngineAdministrator
     float _w;
     float _l;
     float _a;
+    float _velL;
+    float _velR;
+    float _e1;
+    float _e2;
+    float _kL;
+    float _kR;
 
 };
 
