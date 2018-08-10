@@ -7,16 +7,22 @@
 class Car
 {
   public:
-    Car();
-    void spi();
-    void read();
-    int tc;
+    Car(int st1, int st2, int st3, int tc, int pinRET, int pinRES, int pinLET, int pinLES, float w, float l);
+    void Spi();
+    void ReadState();
+    void StateMachine();
+    
 
 
   private:
     EngineAdministrator EngAdmin;
     int _state;
     int _tc;
+    float _acc;
+    float _vel;
+    float _velL;
+    float _velR;
+    float _ang;
 
 };
 

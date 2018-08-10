@@ -11,8 +11,9 @@ class EngineAdministrator
     //void stopEngines();
     
     void differential(float angle, float acc);
-    void uploadAcc();
-    void set_acc();
+    void updateAcc();
+    void set_acc_zero();
+    void updateState(int state);
     float getAccR();
     float getAccL();
     //setMarcha(int marcha);

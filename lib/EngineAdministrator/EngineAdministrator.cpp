@@ -3,7 +3,8 @@
 #include "EngineAdministrator.h"
 #include <math.h>
 
-EngineAdministrator::EngineAdministrator(int pinRET, int pinRES, int pinLET, int pinLES, float w, float l): _rightEngine("right", pinRET, pinRES), _leftEngine("left", pinLET, pinLES)
+EngineAdministrator::EngineAdministrator(int pinRET, int pinRES, int pinLET, int pinLES, float w, float l):
+ _rightEngine("right", pinRET, pinRES), _leftEngine("left", pinLET, pinLES)
     //void startEngines();
 {
 	_w = w;
@@ -51,15 +52,20 @@ void EngineAdministrator::differential(float angle, float acc, float vel, int tc
 	}
 }
 	
-void EngineAdministrator::set_acc(){
+void EngineAdministrator::set_acc_zero(){
 	_accL = 0;
 	_accR = 0;
 }
 
-void EngineAdministrator::uploadAcc(){
+void EngineAdministrator::updateAcc(){
 	_rightEngine.setThrottle(_accR);
 	_leftEngine.setThrottle(_accL);
 
+}
+
+void EngineAdministrator::updateState(int state){
+	_rightEngine.setState(state);
+	_leftEngine.setState(state);
 }
 
 float EngineAdministrator::getAccR(){

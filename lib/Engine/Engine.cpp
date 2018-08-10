@@ -30,7 +30,7 @@ void Engine::setState(int state){
 		digitalWrite(_pinstate, 0);
 	}
 	else{
-		analogWrite(_pinthrottle, 0);
+		digitalWrite(_pinstate, 0);
 	}
 }
 
