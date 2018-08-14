@@ -1,0 +1,6 @@
+rojo = 5v
+azul = data
+amarillo = clk
+negro = gnd
+verde=mode
+morado = chip select 
