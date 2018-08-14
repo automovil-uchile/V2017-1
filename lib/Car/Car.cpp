@@ -1,29 +1,27 @@
 //#include "Arduino.h"
-#include "Engine.h"
+#include "Car.h"
 #include "EngineAdministrator.h"
-#include <math.h>
 
-Car::Car(int st1, int st2, int st3, int tc, int pinRET, int pinRES, int pinLET, int pinLES, float w, float l): 
-EngAdmin(pinRET, pinRES, pinLET, pinLES, w, l)
+Car::Car(int pinSt1, int pinSt2, int piSt3, int tc, int pinRET, int pinRES, int pinLET, int pinLES, float w, float l): EngAdmin(pinRET, pinRES, pinLET, pinLES, w, l)
 {
 	_tc = tc; // traction control
 	_state = 0; // 0 neutro, 1 backward, 2 forward
-	_acc = 0; // acceleration
-	_vel = 0; // body velocity
-	_velL = 0; // left engine velocity
-	_velR = 0; // right engine velocity
-	_ang = 0; // yaw angle
+	_acc = 0.0; // acceleration
+	_vel = 1.0; // body velocity
+	_velL = 1.0; // left engine velocity
+	_velR = 1.0; // right engine velocity
+	_ang = 0.0; // yaw angle
 
 }
 
-void Car::Spi(){
+void Car::Spi(float acc){
 	// read spi and set 
-	
+	_acc = acc;
 
 }
 
-void Car::ReadState(){
-	_state = 2
+void Car::ReadState(int state){
+	_state = state;
 }
 
 
@@ -39,7 +37,7 @@ void Car::StateMachine(){
 	else{
 		EngAdmin.set_acc_zero();
 
-	EngAdmin.uploadAcc();
 	}
+	EngAdmin.updateAcc();
 }
 
