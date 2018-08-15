@@ -2,7 +2,7 @@
 #include "Car.h"
 #include "EngineAdministrator.h"
 
-Car::Car(int pinSt1, int pinSt2, int piSt3, int tc, int pinRET, int pinRES, int pinLET, int pinLES, float w, float l): EngAdmin(pinRET, pinRES, pinLET, pinLES, w, l)
+Car::Car(int pinAcc, int pinBrake, int pinStB, int pinStN, int pinStF, int tc, int pinRET, int pinRES, int pinLET, int pinLES, float w, float l): EngAdmin(pinRET, pinRES, pinLET, pinLES, w, l)
 {
 	_tc = tc; // traction control
 	_state = 0; // 0 neutro, 1 backward, 2 forward
@@ -12,17 +12,29 @@ Car::Car(int pinSt1, int pinSt2, int piSt3, int tc, int pinRET, int pinRES, int 
 	_velR = 1.0; // right engine velocity
 	_ang = 0.0; // yaw angle
 	_brake = 0; // brake on/off
+	_pinAcc = pinAcc; // acc pin
+	_pinBrake = pinBrake; //brake pin
+
+	// initialize pins
+
+	pinMode(pinRET, OUTPUT);
+	pinMode(pinRES, OUTPUT);
+	pinMode(pinLET, OUTPUT);
+	pinMode(pinLES, OUTPUT);
+  	pinMode(pinBrake, INPUT);
+  	pinMode(pinStF, INPUT);
+  	pinMode(pinStN, INPUT);
+  	pinMode(pinStB, INPUT);
 
 }
 
-void Car::ReadAcc(float acc){
-	// read spi and set 
-	_acc = acc;
-
-}
-
-void Car::ReadBrake(int brake){
-	_brake = brake;
+void Car::ReadSensors(){
+	_acc = analogRead(_pinAcc)/1023.0;
+	_ang = 0;
+	_velL = 1;
+	_velR = 1;
+	_vel = 1;
+	_brake = digitalRead(_pinBrake);
 }
 
 void Car::ReadState(int state){
@@ -32,6 +44,10 @@ void Car::ReadState(int state){
 
 float Car::getAcc(){
 	return EngAdmin.getAcc();
+}
+
+int Car::getBrake(){
+	return _brake;
 }
 
 void Car::StateMachine(){

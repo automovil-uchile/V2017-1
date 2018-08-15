@@ -7,12 +7,12 @@
 class Car
 {
   public:
-    Car(int pinSt1, int pinSt2, int pinSt3, int tc, int pinRET, int pinRES, int pinLET, int pinLES, float w, float l);
-    void ReadAcc(float acc);
+    Car(int pinAcc, int pinBrake, int pinStB, int pinStN, int pinStF, int tc, int pinRET, int pinRES, int pinLET, int pinLES, float w, float l);
     void ReadState(int state);
     void StateMachine();
-    void ReadBrake(int brake);
+    void ReadSensors();
     float getAcc();
+    int getBrake();
     
 
 
@@ -26,6 +26,8 @@ class Car
     float _velR;
     float _ang;
     int _brake;
+    int _pinBrake;
+    int _pinAcc;
 
 };
 

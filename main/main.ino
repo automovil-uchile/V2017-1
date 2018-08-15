@@ -2,38 +2,37 @@
 #include <Engine.h>
 #include <Car.h>
 
-Car Auto(11, 12, 13, 0, 3, 4, 5, 6, 1, 2);
-// int pinSt1, int pinSt2, int piSt3, int tc, int pinRET, int pinRES, int pinLET, int pinLES, float w, float l
-float a;
-float b;
-int c;
+int pinStF = 13; //status input
+int pinStN = 12; //status input
+int pinStB = 11; //status input
+int tc = 0; //traction control
+int pinRET = 3; //right throttle output
+int pinRES = 4; //right status output
+int pinLET = 5; //left throttle output
+int pinLES = 6; //left status output
+int pinBrake = 8;
+int pinAcc = 0;
+float w = 1; //car width
+float l = 2; // car length
+
+Car Auto(pinAcc, pinBrake, pinStB, pinStN, pinStF, tc, pinRET, pinRES, pinLET, pinLES, w, l);
+
 void setup()
 {
-	pinMode(3, OUTPUT);
-	pinMode(4, OUTPUT);
-	pinMode(5, OUTPUT);
-	pinMode(6, OUTPUT);
-  pinMode(8, INPUT);
+	
 	Serial.begin(9600);
 }
 
 void loop()
 {
 	//EA.startEngines();
-  a = analogRead(0);
-  b = a/1023;
-  c = digitalRead(8);
+  Auto.ReadSensors();
 	Auto.ReadState(2);
-  Auto.ReadAcc(b);
-  Auto.ReadBrake(c);
 	Auto.StateMachine();
   
-  Serial.print(a);
+  Serial.print(Auto.getBrake());
   Serial.print("\t");
-  Serial.print(b);
-  Serial.print("\t");
-  Serial.print(c);
-  Serial.print("\t");
+  
   Serial.print(Auto.getAcc());
   
   Serial.print("\n");
