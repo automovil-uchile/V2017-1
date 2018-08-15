@@ -31,14 +31,14 @@ Car::Car(int pinAcc, int pinBrake, int pinStB, int pinStN, int pinStF, int tc, i
 void Car::ReadSensors(){
 	_acc = analogRead(_pinAcc)/1023.0;
 	_ang = 0;
-	_velL = 1;
-	_velR = 1;
+	_velL = 1; // interruption
+	_velR = 1; // interruption
 	_vel = 1;
-	_brake = digitalRead(_pinBrake);
+	_brake = digitalRead(_pinBrake); // interruption
 }
 
 void Car::ReadState(int state){
-	_state = state;
+	_state = state; // interruption
 }
 
 
@@ -52,7 +52,6 @@ int Car::getBrake(){
 
 void Car::StateMachine(){
 	EngAdmin.updateState(_state);
-
 
 	if (_brake==1 || _state==0){
 		_acc = 0;
