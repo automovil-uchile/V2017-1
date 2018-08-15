@@ -18,10 +18,12 @@ EngineAdministrator::EngineAdministrator(int pinRET, int pinRES, int pinLET, int
 	_eR = 0;
 	_kL = 1;
 	_kR = 1;
+	_acc = 0;
 }
 
 
 void EngineAdministrator::differential(float angle, float acc, float vel, int tc, float vl, float vr){
+	_acc = acc;
 	if (angle>0.0){
 		//left curve
 		_a = _l/tan(angle);
@@ -52,6 +54,7 @@ void EngineAdministrator::differential(float angle, float acc, float vel, int tc
 }
 	
 void EngineAdministrator::set_acc_zero(){
+	_acc = 0;
 	_accL = 0;
 	_accR = 0;
 }
@@ -75,7 +78,9 @@ float EngineAdministrator::getAccL(){
 	return _accL;
 }
 
-
+float EngineAdministrator::getAcc(){
+	return _acc;
+}
 
 /*
 void EngineAdministrator::setMarcha(int marcha)

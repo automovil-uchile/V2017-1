@@ -11,13 +11,18 @@ Car::Car(int pinSt1, int pinSt2, int piSt3, int tc, int pinRET, int pinRES, int 
 	_velL = 1.0; // left engine velocity
 	_velR = 1.0; // right engine velocity
 	_ang = 0.0; // yaw angle
+	_brake = 0; // brake on/off
 
 }
 
-void Car::Spi(float acc){
+void Car::ReadAcc(float acc){
 	// read spi and set 
 	_acc = acc;
 
+}
+
+void Car::ReadBrake(int brake){
+	_brake = brake;
 }
 
 void Car::ReadState(int state){
@@ -25,19 +30,20 @@ void Car::ReadState(int state){
 }
 
 
+float Car::getAcc(){
+	return EngAdmin.getAcc();
+}
+
 void Car::StateMachine(){
-	EngAdmin.updateState(_state);	
-	if (_state=2){				
-		EngAdmin.differential(_ang, _acc, _vel, _tc, _velL, _velR);
-	}
-	else if (_state=1){
-		EngAdmin.differential(_ang, _acc, _vel, _tc, _velL, _velR);
+	EngAdmin.updateState(_state);
 
-	}
-	else{
-		EngAdmin.set_acc_zero();
 
+	if (_brake==1 || _state==0){
+		_acc = 0;
 	}
+		//set driver state 1
+	
+	EngAdmin.differential(_ang, _acc, _vel, _tc, _velL, _velR);
 	EngAdmin.updateAcc();
 }
 

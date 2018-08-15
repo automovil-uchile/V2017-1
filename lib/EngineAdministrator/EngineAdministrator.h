@@ -15,6 +15,7 @@ class EngineAdministrator
     void updateState(int state);
     float getAccR();
     float getAccL();
+    float getAcc();
     //setMarcha(int marcha);
     //getVelocity();
     //getMarcha();
@@ -35,6 +36,7 @@ class EngineAdministrator
     float _eR;
     float _kL;
     float _kR;
+    float _acc;
 
 };
 

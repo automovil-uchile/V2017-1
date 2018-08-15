@@ -1,31 +1,43 @@
 #include <EngineAdministrator.h>
 #include <Engine.h>
+#include <Car.h>
 
-
-EngineAdministrator EA(3, 4, 5, 7, 1., 2.);
-// int pinRET, int pinRES, int pinLET, int pinLES, float w, float l
+Car Auto(11, 12, 13, 0, 3, 4, 5, 6, 1, 2);
+// int pinSt1, int pinSt2, int piSt3, int tc, int pinRET, int pinRES, int pinLET, int pinLES, float w, float l
 float a;
 float b;
+int c;
 void setup()
 {
 	pinMode(3, OUTPUT);
 	pinMode(4, OUTPUT);
 	pinMode(5, OUTPUT);
-	pinMode(7, OUTPUT);
+	pinMode(6, OUTPUT);
+  pinMode(8, INPUT);
 	Serial.begin(9600);
 }
 
 void loop()
 {
 	//EA.startEngines();
-	float ang = 10.;
-	EA.differential(deg2rad(ang), 0.5);
-	EA.updateAcc();
-	a = EA.getAccR();
-	b = EA.getAccL();
-	Serial.print(a);
-	Serial.print(b);
-	delay(1000);
+  a = analogRead(0);
+  b = a/1023;
+  c = digitalRead(8);
+	Auto.ReadState(2);
+  Auto.ReadAcc(b);
+  Auto.ReadBrake(c);
+	Auto.StateMachine();
+  
+  Serial.print(a);
+  Serial.print("\t");
+  Serial.print(b);
+  Serial.print("\t");
+  Serial.print(c);
+  Serial.print("\t");
+  Serial.print(Auto.getAcc());
+  
+  Serial.print("\n");
+	//delay(1000);
 }
 
 float deg2rad(float angle){
