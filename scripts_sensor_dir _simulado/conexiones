@@ -1,0 +1,15 @@
+Conexiones lectura_finalisimo y asdsadkhw
+
+data:
+
+	12 = signal_out ---> 4 del master
+	2 = clk    --------> 5 del master
+	3 = lect_master ---> 7 del master
+			     2 el master va en gnd.. cuando se saca el cable del ground entra a la interrupcion
+	tmb tiene q haber un cable que una las tierras	
+
+	el pin de en medio del pote va a A0
+	
+
+
+	
