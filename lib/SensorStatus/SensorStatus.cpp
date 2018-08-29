@@ -1,4 +1,4 @@
-
+#include "Arduino.h"
 #include "SensorStatus.h"
 #include <math.h>  //no se si es necesario o si viene con arduino.h ?
 /*no se si hay q incluir algo mas aqui...  */
@@ -16,8 +16,7 @@ SensorStatus::SensorStatus(int pinclk_dir, int pindata_dir, int nbits_dir, int s
     _sincsim_dir = sincsim_dir;
     digitalWrite(pinclk_dir, HIGH); //clk de dir por default es high
 }
-float SensorStatus::get_dir(){
-    int value = 0;
+int SensorStatus::get_dir(){
     int val_read = 0;
     int perder_tiempo = 0;
     digitalWrite(_sincsim_dir, HIGH);
@@ -25,7 +24,7 @@ float SensorStatus::get_dir(){
     int value_actual = 0; 
     int count = 0;
     while(count <= (2*_nbits_dir-1)){
-        if ((1&&count)==0){
+        if ((1&count)==0){
             perder_tiempo = perder_tiempo <<1;
             digitalWrite(_pinclk_dir, LOW);
             delay(1);
@@ -37,16 +36,14 @@ float SensorStatus::get_dir(){
             value_actual = value_actual << 1;
             digitalWrite(_pinclk_dir, HIGH);
             delay(1);
-            count ++;
             val_read = digitalRead(_pindata_dir);
             value_actual = value_actual + val_read;
-
+            count ++;
             }
     }
-    value = value_actual;
     digitalWrite(_sincsim_dir, LOW);
-    float pos_degree = 360.0/(pow(2,_nbits_dir))*value_actual;
-    digitalWrite(_sicsim_dir, HIGH);
-    return pos_degree; 
+    //float pos_degree = 360.0/(pow(2,_nbits_dir))*value_actual;
+    //return pos_degree; 
+    return value_actual;
 }
 

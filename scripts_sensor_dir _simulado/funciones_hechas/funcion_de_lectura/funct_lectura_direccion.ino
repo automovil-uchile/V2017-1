@@ -34,7 +34,7 @@ int direction_read(int n_bits){
     else{
       value_actual = value_actual <<1;
       digitalWrite(clk, HIGH);
-      delay(1);
+ #     delay(1);
       val_read = digitalRead(data);
       value_actual = value_actual+val_read;
       count ++;
