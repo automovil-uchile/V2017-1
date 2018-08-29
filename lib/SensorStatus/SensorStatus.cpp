@@ -16,7 +16,7 @@ SensorStatus::SensorStatus(int pinclk_dir, int pindata_dir, int nbits_dir, int s
     _sincsim_dir = sincsim_dir;
     digitalWrite(pinclk_dir, HIGH); //clk de dir por default es high
 }
-int SensorStatus::get_dir(){
+float SensorStatus::get_dir(){
     int val_read = 0;
     int perder_tiempo = 0;
     digitalWrite(_sincsim_dir, HIGH);
@@ -42,8 +42,8 @@ int SensorStatus::get_dir(){
             }
     }
     digitalWrite(_sincsim_dir, LOW);
-    //float pos_degree = 360.0/(pow(2,_nbits_dir))*value_actual;
-    //return pos_degree; 
-    return value_actual;
+    float pos_degree = (2*3.1416)/(pow(2,_nbits_dir))*value_actual;
+    return pos_degree; 
+    //return value_actual;
 }
 
