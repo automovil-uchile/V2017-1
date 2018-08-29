@@ -11,6 +11,9 @@ class Car
     void ReadState(int state);
     void StateMachine();
     void ReadSensors();
+    void ReadVel(float vl, float vr);
+    float getVelL();
+    float getVelR();
     float getAcc();
     int getBrake();
     

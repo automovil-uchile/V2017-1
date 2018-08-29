@@ -30,11 +30,16 @@ Car::Car(int pinAcc, int pinBrake, int pinStB, int pinStN, int pinStF, int tc, i
 
 void Car::ReadSensors(){
 	_acc = analogRead(_pinAcc)/1023.0;
-	_ang = 0;
+	_ang = 20*3.14/180; // must be in rad
 	_velL = 1; // interruption
 	_velR = 1; // interruption
 	_vel = 1;
 	_brake = digitalRead(_pinBrake); // interruption
+}
+
+void Car::ReadVel(float vl, float vr){
+	_velL = vl;
+	_velR = vr;
 }
 
 void Car::ReadState(int state){
@@ -44,6 +49,14 @@ void Car::ReadState(int state){
 
 float Car::getAcc(){
 	return EngAdmin.getAcc();
+}
+
+float Car::getVelL(){
+	return _velL;
+}
+
+float Car::getVelR(){
+	return _velR;
 }
 
 int Car::getBrake(){
