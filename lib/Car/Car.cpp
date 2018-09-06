@@ -1,8 +1,9 @@
 //#include "Arduino.h"
 #include "Car.h"
 #include "EngineAdministrator.h"
+#include "SensorStatus.h"
 
-Car::Car(int pinAcc, int pinBrake, int pinStB, int pinStN, int pinStF, int tc, int pinRET, int pinRES, int pinLET, int pinLES, float w, float l): EngAdmin(pinRET, pinRES, pinLET, pinLES, w, l)
+Car::Car(int pinAcc, int pinBrake, int pinStB, int pinStN, int pinStF, int tc, int pinRET, int pinRES, int pinLET, int pinLES, float w, float l, int pinclk_dir, int pindata_dir, int nbits_dir, int sincsim_dir): EngAdmin(pinRET, pinRES, pinLET, pinLES, w, l) :SensorStatus(int pinclk_dir, int pindata_dir, int nbits_dir, int sincsim_dir)
 {
 	_tc = tc; // traction control
 	_state = 0; // 0 neutro, 1 backward, 2 forward
@@ -30,7 +31,7 @@ Car::Car(int pinAcc, int pinBrake, int pinStB, int pinStN, int pinStF, int tc, i
 
 void Car::ReadSensors(){
 	_acc = analogRead(_pinAcc)/1023.0;
-	_ang = 20*3.14/180; // must be in rad
+	_ang = Sensor.Status();
 	_velL = 1; // interruption
 	_velR = 1; // interruption
 	_vel = 1;

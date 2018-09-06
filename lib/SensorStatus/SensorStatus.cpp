@@ -1,8 +1,6 @@
 #include "Arduino.h"
 #include "SensorStatus.h"
-#include <math.h>  //no se si es necesario o si viene con arduino.h ?
-/*no se si hay q incluir algo mas aqui...  */
-
+#include <math.h>  
 
 SensorStatus::SensorStatus(int pinclk_dir, int pindata_dir, int nbits_dir, int sincsim_dir)
 {
