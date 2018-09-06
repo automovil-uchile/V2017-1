@@ -3,8 +3,9 @@
 #include "EngineAdministrator.h"
 #include "SensorStatus.h"
 
-Car::Car(int pinAcc, int pinBrake, int pinStB, int pinStN, int pinStF, int tc, int pinRET, int pinRES, int pinLET, int pinLES, float w, float l, int pinclk_dir, int pindata_dir, int nbits_dir, int sincsim_dir): EngAdmin(pinRET, pinRES, pinLET, pinLES, w, l) :SensorStatus(int pinclk_dir, int pindata_dir, int nbits_dir, int sincsim_dir)
-{
+Car::Car(int pinAcc, int pinBrake, int pinStB, int pinStN, int pinStF, int tc, int pinRET, int pinRES, int pinLET, int pinLES, float w, float l): EngAdmin(pinRET, pinRES, pinLET, pinLES, w, l)// :SensorStatus(int pinclk_dir, int pindata_dir, int nbits_dir, int sincsim_dir)
+// int pinclk_dir, int pindata_dir, int nbits_dir, int sincsim_dir
+{ 
 	_tc = tc; // traction control
 	_state = 0; // 0 neutro, 1 backward, 2 forward
 	_acc = 0.0; // acceleration
@@ -15,6 +16,10 @@ Car::Car(int pinAcc, int pinBrake, int pinStB, int pinStN, int pinStF, int tc, i
 	_brake = 0; // brake on/off
 	_pinAcc = pinAcc; // acc pin
 	_pinBrake = pinBrake; //brake pin
+	_pinF = pinStF;
+	_pinN = pinStN;
+	_pinB = pinStB;
+
 
 	// initialize pins
 
@@ -31,7 +36,7 @@ Car::Car(int pinAcc, int pinBrake, int pinStB, int pinStN, int pinStF, int tc, i
 
 void Car::ReadSensors(){
 	_acc = analogRead(_pinAcc)/1023.0;
-	_ang = Sensor.Status();
+	//_ang = Sensor.Status();
 	_velL = 1; // interruption
 	_velR = 1; // interruption
 	_vel = 1;
@@ -79,14 +84,20 @@ float Car::getAng(){
 	return _ang;
 }
 
+int Car::getState(){
+	return _state;
+}
+
 void Car::StateMachine(){
 	EngAdmin.updateState(_state);
 	if (_brake==1 || _state==0){
-		_acc = 0;
+		EngAdmin.differential(_ang, 0, _vel, _tc, _velL, _velR);
 	}
+	else{
+		EngAdmin.differential(_ang, _acc, _vel, _tc, _velL, _velR);
 		//set driver state 1
+	}	
 	
-	EngAdmin.differential(_ang, _acc, _vel, _tc, _velL, _velR);
 	EngAdmin.updateAcc();
 }
 
