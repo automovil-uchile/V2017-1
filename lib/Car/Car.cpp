@@ -3,7 +3,7 @@
 #include "EngineAdministrator.h"
 #include "SensorStatus.h"
 
-Car::Car(int pinAcc, int pinBrake, int pinStB, int pinStN, int pinStF, int tc, int pinRET, int pinRES, int pinLET, int pinLES, float w, float l, int pinclk_dir, int pindata_dir, int nbits_dir, int sincsim_dir): EngAdmin(pinRET, pinRES, pinLET, pinLES, w, l) :SensorStatus(int pinclk_dir, int pindata_dir, int nbits_dir, int sincsim_dir)
+Car::Car(int pinAcc, int pinBrake, int pinStB, int pinStN, int pinStF, int tc, int pinRET, int pinRES, int pinLET, int pinLES, float w, float l, int pinclk_dir, int pindata_dir, int nbits_dir, int sincsim_dir): EngAdmin(pinRET, pinRES, pinLET, pinLES, w, l) : SensorStatus(int pinclk_dir, int pindata_dir, int nbits_dir, int sincsim_dir)
 {
 	_tc = tc; // traction control
 	_state = 0; // 0 neutro, 1 backward, 2 forward
@@ -31,7 +31,7 @@ Car::Car(int pinAcc, int pinBrake, int pinStB, int pinStN, int pinStF, int tc, i
 
 void Car::ReadSensors(){
 	_acc = analogRead(_pinAcc)/1023.0;
-	_ang = Sensor.Status();
+	_ang = SensorStatus.get_dir();
 	_velL = 1; // interruption
 	_velR = 1; // interruption
 	_vel = 1;
@@ -78,6 +78,7 @@ int Car::getBrake(){
 float Car::getAng(){
 	return _ang;
 }
+
 
 void Car::StateMachine(){
 	EngAdmin.updateState(_state);
