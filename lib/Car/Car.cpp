@@ -60,7 +60,7 @@ void Car::ReadState(){
 
 
 float Car::getAcc(){
-	return EngAdmin.getAcc();
+	return _acc; //EngAdmin.getAcc();
 }
 
 float Car::getVelL(){
@@ -73,6 +73,10 @@ float Car::getVelR(){
 
 int Car::getBrake(){
 	return _brake;
+}
+
+float Car::getAng(){
+	return _ang;
 }
 
 void Car::StateMachine(){

@@ -16,6 +16,7 @@ class Car
     float getVelR();
     float getAcc();
     int getBrake();
+    float getAng();
     
 
 
