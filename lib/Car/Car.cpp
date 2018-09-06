@@ -42,8 +42,19 @@ void Car::ReadVel(float vl, float vr){
 	_velR = vr;
 }
 
-void Car::ReadState(int state){
-	_state = state; // interruption
+void Car::ReadState(){
+	_f = digitalRead(_pinF);
+	_n = digitalRead(_pinN);
+	_b = digitalRead(_pinB);
+	if (_f==1){
+		_state = 2;
+	}
+	if (_n==1){
+		_state = 0;
+	}
+	if (_b==1){
+		_state = 1;
+	}
 }
 
 
@@ -65,7 +76,6 @@ int Car::getBrake(){
 
 void Car::StateMachine(){
 	EngAdmin.updateState(_state);
-
 	if (_brake==1 || _state==0){
 		_acc = 0;
 	}
