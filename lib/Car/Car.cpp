@@ -3,7 +3,7 @@
 #include "EngineAdministrator.h"
 #include "SensorStatus.h"
 
-Car::Car(int pinAcc, int pinBrake, int pinStB, int pinStN, int pinStF, int tc, int pinRET, int pinRES, int pinLET, int pinLES, float w, float l, int pinclk_dir, int pindata_dir, int nbits_dir, int sincsim_dir): EngAdmin(pinRET, pinRES, pinLET, pinLES, w, l) : SensorStatus(int pinclk_dir, int pindata_dir, int nbits_dir, int sincsim_dir)
+Car::Car(int pinAcc, int pinBrake, int pinStB, int pinStN, int pinStF, int tc, int pinRET, int pinRES, int pinLET, int pinLES, float w, float l, int pinclk_dir, int pindata_dir, int nbits_dir, int sincsim_dir): EngAdmin(pinRET, pinRES, pinLET, pinLES, w, l),  SensorStatus(int pinclk_dir, int pindata_dir, int nbits_dir, int sincsim_dir)
 {
 	_tc = tc; // traction control
 	_state = 0; // 0 neutro, 1 backward, 2 forward
