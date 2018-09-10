@@ -35,8 +35,8 @@ Car::Car(int pinAcc, int pinBrake, int pinStB, int pinStN, int pinStF, int tc, i
 }
 
 void Car::ReadSensors(){
-	_acc = analogRead(_pinAcc)/1023.0;
-	//_ang = Sensor.Status();
+	_acc = analogRead(_pinAcc)/1023.0; // llega hasta 2.8V
+	_ang = 0; //analogRead(1)*3.14/1023.0; //Sensor.Status();
 	_velL = 1; // interruption
 	_velR = 1; // interruption
 	_vel = 1;
