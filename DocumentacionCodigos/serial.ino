@@ -6,7 +6,7 @@
 
 	Este sketch es una prueba.
 
-	Cuando recibe algún dato por serial, dquiere dos datos consecutivos
+	Cuando recibe algún dato por serial, adquiere dos datos consecutivos
 	desde un pin analógico, para luego enviarlos por serial en el formato
 	" 'val0' , 'val1'"
 
