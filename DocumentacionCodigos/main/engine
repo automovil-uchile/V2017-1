@@ -1,0 +1,35 @@
+Engine motorR("right", 3, 4);
+Engine motorL("right", 5, 7);
+
+void setup()
+{
+	pinMode(3, OUTPUT);
+	pinMode(4, OUTPUT);
+	pinMode(5, OUTPUT);
+	pinMode(7, OUTPUT);
+}
+
+void loop()
+{
+	motorR.setThrottle(1.0);
+	motorL.setThrottle(1.0);
+	delay(1000);
+	motorR.setThrottle(0.75);
+	motorL.setThrottle(0.75);
+	delay(1000);
+	motorR.setThrottle(0.5);
+	motorR.setState(0);
+	motorL.setThrottle(0.5);
+	motorL.setState(0);
+	delay(1000);
+	motorR.setThrottle(0.25);
+	motorL.setThrottle(0.25);
+	delay(1000);
+	motorR.setThrottle(0.0);
+	motorL.setThrottle(0.0);
+	delay(1000);
+}
+
+float deg2rad(float angle){
+  return angle*3.14/180.;
+}
