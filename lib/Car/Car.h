@@ -1,13 +1,13 @@
 #ifndef Car_h
 #define Car_h
-
+#include "SensorStatus.h"
 #include "EngineAdministrator.h"
 //#include "Arduino.h"
 
 class Car
 {
   public:
-    Car(int pinAcc, int pinBrake, int pinStB, int pinStN, int pinStF, int tc, int pinRET, int pinRES, int pinLET, int pinLES, float w, float l);
+    Car(int pinAcc, int pinBrake, int pinStB, int pinStN, int pinStF, int tc, int pinRET, int pinRES, int pinLET, int pinLES, float w, float l, int pinclk_dir, int pindata_dir, int nbits_dir, int sincsim_dir);
     void ReadState();
     void StateMachine();
     void ReadSensors();
@@ -18,7 +18,9 @@ class Car
     int getBrake();
     float getAng();
     int getState();
-    
+    float getThrottleL();
+    float getThrottleR();
+
 
 
   private:
@@ -29,7 +31,6 @@ class Car
     float _vel;
     float _velL;
     float _velR;
-    float _ang;
     int _brake;
     int _pinBrake;
     int _pinAcc;
@@ -39,8 +40,8 @@ class Car
     int _pinF;
     int _pinN;
     int _pinB;
-
-
+    SensorStatus _Sensors;
+    float _ang;
 };
 
 #endif

@@ -11,47 +11,47 @@ int pinLET = 3; //left throttle output pwm UNO 6
 int pinLES = 26; //left status output digital UNO 7
 int pinBrake = 25; // digital UNO 8
 int pinAcc = 0; // analog UNO 0
+int pinclkdir = 5;
+int pindatadir = 6;
+int sincsimdir = 7;
+
+int nbitsdir = 10;
 int tc = 0; //traction control
 float w = 1; //car width
 float l = 2; // car length
-float ti = 0;
-float tf = millis();
-float dt;
-float f;
 
-Car Auto(pinAcc, pinBrake, pinStB, pinStN, pinStF, tc, pinRET, pinRES, pinLET, pinLES, w, l);
+Car Auto(pinAcc, pinBrake, pinStB, pinStN, pinStF, tc, pinRET, pinRES, pinLET, pinLES, w, l, pinclkdir, pindatadir, nbitsdir, sincsimdir);
 
 void setup()
 {
 
-	Serial.begin(9600);
+  Serial.begin(9600);
 }
 
 void loop()
 {
-	//EA.startEngines();
+  //EA.startEngines();
   Auto.ReadSensors();
-  Auto.ReadVel(f, 1);
-	Auto.ReadState();
-	Auto.StateMachine();
+  Auto.ReadState();
+  Auto.StateMachine();
 
   Serial.print(Auto.getBrake());
   Serial.print("\t");  
   Serial.print(Auto.getAcc());
   Serial.print("\t");
-  Serial.print(f);
+  Serial.print(Auto.getAng());
   Serial.print("\t");
-  Serial.print(Auto.getVelL());
+  Serial.print(Auto.getThrottleL());
+  Serial.print("\t");
+  Serial.print(Auto.getThrottleR());
   Serial.print("\t");
   Serial.print(Auto.getState());
   Serial.print("\n");
-	//delay(1000);
+  //delay(1000);
 }
 
-float deg2rad(float angle){
-	return angle*3.14/180.;
-}
 
+/*
 void velo(){
   tf = millis();
   dt = (tf - ti)*8;
@@ -59,3 +59,4 @@ void velo(){
   f = 60000/dt;
   
 }
+*/

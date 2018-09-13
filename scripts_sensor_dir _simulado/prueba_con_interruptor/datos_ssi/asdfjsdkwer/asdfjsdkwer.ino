@@ -96,6 +96,3 @@ void lectura_master(){
   Serial.println(value);
   mask=512;
 }
-
-
-
