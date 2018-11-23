@@ -1,12 +1,20 @@
 #include "Arduino.h"
 #include "SensorStatus.h"
-#include <math.h>  //no se si es necesario o si viene con arduino.h ?
-/*no se si hay q incluir algo mas aqui...  */
-
+#include <math.h>
 
 SensorStatus::SensorStatus(int pinclk_dir, int pindata_dir, int nbits_dir, int sincsim_dir)
 {
-    //setup direccion
+    /*
+    This class manages SPI communication between the Arduino board and yaw angle sensor.
+
+    Attributes:
+        _nbits_dir (int): 
+        _pinclk_dir (int): 
+        _pindata_dir (int): 
+        _sincsim_dir (int): 
+
+    */
+    // setup
     pinMode(pinclk_dir, OUTPUT);
     pinMode(pindata_dir, INPUT);
     pinMode(sincsim_dir, OUTPUT);
@@ -14,9 +22,18 @@ SensorStatus::SensorStatus(int pinclk_dir, int pindata_dir, int nbits_dir, int s
     _pinclk_dir = pinclk_dir;
     _pindata_dir = pindata_dir;
     _sincsim_dir = sincsim_dir;
-    digitalWrite(pinclk_dir, HIGH); //clk de dir por default es high
+    digitalWrite(pinclk_dir, HIGH); // default HIGH
 }
+
+
 float SensorStatus::get_dir(){
+    /*
+    Args:
+        Nothing
+
+    Returns:
+        pos_degree (float):
+    */
     int val_read = 0;
     int perder_tiempo = 0;
     digitalWrite(_sincsim_dir, HIGH);

@@ -1,18 +1,19 @@
-/* e:
-  Engine.h
-
-  Created 2018-1
-	by Mauricio Romero Jofre, Matías García Gutiérrez
-
-	Este archivo .cpp, es donde se declara la clase Engine, sus metodos y variables.
-
-*/
-
 #include "Arduino.h"
 #include "Engine.h"
 
 Engine::Engine(char* name, int pinthrottle, int pinstate)
 {
+	/*
+	This class controls engine's state and its throttle
+
+	Attributes:
+		_name (*char): engine's name
+		_pinthrottle (int): engine's output throttle pin connection
+		_pinstate (int): engine's output state pin connection
+		_state (int): engine's selected state
+		_dutycycle (int): pwm output frequency for engine's throttle
+	*/
+
 	_name = name;
 	_pinthrottle = pinthrottle;
 	_pinstate = pinstate;
@@ -22,15 +23,28 @@ Engine::Engine(char* name, int pinthrottle, int pinstate)
 }
 
 void Engine::setThrottle(float throttle){
+	/*
+	Sets the pwm frequency.
+
+	Args:
+		throttle (float): desired pwm frequency.
+
+	Returns:
+		Nothing
+	*/
 	_dutycycle = static_cast<int>(throttle*255.0);
 	analogWrite(_pinthrottle, _dutycycle);
 }
 
 void Engine::setState(int state){
 	/*
-	2: forward
-	1: backward
-	0: idle
+	Sets the desired state in engine.
+
+	Args:
+		state (int): desired state (2=forward, 1=backward, 0:idle)
+
+	Returns:
+		Nothing
 	*/
 	_state = state;
 	if (_state==2){
