@@ -6,3 +6,5 @@ The following repository holds the documentiation of the work done for the cours
 
 ## ¿How to use this repository?
 
+If all you want is to access the code to make your own electric car control, please look at the /code folder.
+
